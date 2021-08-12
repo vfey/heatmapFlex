@@ -18,10 +18,19 @@ devtools::install_github("vfey/heatmapS")
 
 ## Usage
 ### A simple example
-Generate a random 10x10 matrix, order it using default clustering methods and split it into each 2 groups along both rows and columns:
+Generate a random 10x10 matrix and plot it using default values (which admittedly is not pretty):
+```
+mat <- matrix(rnorm(100), nrow = 10)
+dl <- heatmap.n2(mat)
+```
+![simple_example_heatmap](https://user-images.githubusercontent.com/69206181/129168686-c706f02f-cb07-45b9-ab58-a703a09f41ae.png)
+
+### A split heatmap
+Generate a random 10x10 matrix with two distinct sets, order it using default clustering methods, split it into each two groups along both rows and columns and adjust colour palette and dendrogram dimensions:
 ```
 mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
 dl <- heatmap.n2(mat, col = "BuWtRd", rowMembers=rep(1:2, each=5), colMembers=rep(1:2, each=5),
-  labRow=paste0("gene-", 1:10), labCol=paste0(c("A", "B"), rep(1:5, 2)), r.cex=0.8)
+  labRow=paste0("gene-", 1:10), labCol=paste0(c("A", "B"), rep(1:5, 2)), r.cex=0.8,
+  dendroheight = lcm(2.2), dendrowidth = lcm(2.4))
 ```
-![simple_example_heatmap](https://user-images.githubusercontent.com/69206181/129165169-de5059a4-5957-44df-b18d-5421ed9d4776.png)
+![split_adjust_example_heatmap](https://user-images.githubusercontent.com/69206181/129165169-de5059a4-5957-44df-b18d-5421ed9d4776.png)
