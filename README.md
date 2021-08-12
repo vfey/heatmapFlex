@@ -9,10 +9,18 @@ The package has a number of tools supporting more flexible heatmaps. The graphic
 
 ## Installation
 ### CRAN
-install.packages("heatmapS")
+`install.packages("heatmapS")`
 ### Latest development version
+```
 install.packages("devtools")  
 devtools::install_github("vfey/heatmapS")
+```
 
 ## Usage
-
+### A simple example
+Generate a random 10x10 matrix, order it using default clustering methods and split it into each 2 groups along both rows and columns:
+```
+mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
+dl <- heatmap.n2(mat, col = "BuWtRd", rowMembers=rep(1:2, each=5), colMembers=rep(1:2, each=5))
+```
+![simple_example_heatmap](https://user-images.githubusercontent.com/69206181/129163847-d644720b-b91b-4bc5-bc9e-ae315275c88d.png)
