@@ -21,6 +21,7 @@ devtools::install_github("vfey/heatmapS")
 Generate a random 10x10 matrix, order it using default clustering methods and split it into each 2 groups along both rows and columns:
 ```
 mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
-dl <- heatmap.n2(mat, col = "BuWtRd", rowMembers=rep(1:2, each=5), colMembers=rep(1:2, each=5), labRow=paste0("gene-", 1:10), labCol=paste0(c("A", "B"), rep(1:5, 2)), r.cex=0.8)
+dl <- heatmap.n2(mat, col = "BuWtRd", rowMembers=rep(1:2, each=5), colMembers=rep(1:2, each=5),
+  labRow=paste0("gene-", 1:10), labCol=paste0(c("A", "B"), rep(1:5, 2)), r.cex=0.8)
 ```
 ![simple_example_heatmap](https://user-images.githubusercontent.com/69206181/129165169-de5059a4-5957-44df-b18d-5421ed9d4776.png)
