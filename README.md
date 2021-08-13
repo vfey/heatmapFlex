@@ -1,4 +1,4 @@
-# heatmapS
+# heatmapFlex
 Tools for producing flexible heatmaps, inclduding zooming, splitting, picket plots, etc.
 
 ## License
@@ -9,11 +9,11 @@ The package has a number of tools supporting more flexible heatmaps. The graphic
 
 ## Installation
 ### CRAN
-`install.packages("heatmapS")`
+`install.packages("heatmapFlex")`
 ### Latest development version
 ```
 install.packages("devtools")  
-devtools::install_github("vfey/heatmapS")
+devtools::install_github("vfey/heatmapFlex")
 ```
 
 ## Usage
