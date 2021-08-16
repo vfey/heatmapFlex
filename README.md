@@ -45,4 +45,4 @@ dl <- heatmap.n2(mat, col = "BuWtRd", labRow=paste0("gene-", 1:10), labCol=paste
 zoom_heatmap(dl)
 ```
 
-![zoomed_example_heatmap]("https://user-images.githubusercontent.com/69206181/129567742-66d35168-cf07-4c52-9e05-8d6b56682637.png")
+![zoomed_example_heatmap](https://user-images.githubusercontent.com/69206181/129567742-66d35168-cf07-4c52-9e05-8d6b56682637.png)
