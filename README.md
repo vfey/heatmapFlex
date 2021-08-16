@@ -34,3 +34,15 @@ dl <- heatmap.n2(mat, col = "BuWtRd", rowMembers=rep(1:2, each=5), colMembers=re
   dendroheight = lcm(2.2), dendrowidth = lcm(2.4))
 ```
 ![split_adjust_example_heatmap](https://user-images.githubusercontent.com/69206181/129165169-de5059a4-5957-44df-b18d-5421ed9d4776.png)
+
+### A zoomed heatmap
+Generate a random 10x10 matrix with two distinct sets and plot it using the same colour palette  and adjustments as in the previous example. After it has been plotted to a screen graphics device and calling \code{zoom_heatmap} it can be zoomed into by clicking two distinct points inside the plot.
+```
+mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
+# IMPORTANT: Assign the plot parameters to an object that may be used by 'zoom_heatmap'.
+dl <- heatmap.n2(mat, col = "BuWtRd", labRow=paste0("gene-", 1:10), labCol=paste0(c("A", "B"), rep(1:5, 2)),
+                 r.cex=0.8, dendroheight = lcm(2.2), dendrowidth = lcm(2.4))
+zoom_heatmap(dl)
+```
+
+![zoomed_example_heatmap]("https://user-images.githubusercontent.com/69206181/129567742-66d35168-cf07-4c52-9e05-8d6b56682637.png")
