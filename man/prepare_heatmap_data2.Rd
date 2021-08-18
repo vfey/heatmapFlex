@@ -38,9 +38,9 @@ prepare_heatmap_data2(
 
 \item{reorder}{(\code{logical}). Boolean of length 2 for rows and columns. Should rows and/or columns be reordered according to \code{Rowv}/\code{Colv}?}
 
-\item{distfun}{(\code{function}). Distance function. Defaults to \code{dist}.}
+\item{distfun}{(\code{function}). Distance function. Defaults to \code{\link[stats]{dist}}.}
 
-\item{hclustfun}{(\code{function}). Hierarchical clutering function. Defaults to \code{hclust}.}
+\item{hclustfun}{(\code{function}). Hierarchical clustering function. Defaults to \code{\link[stats]{hclust}}.}
 
 \item{rowMembers}{(\code{character}). Group vector to split rows by.}
 
@@ -54,7 +54,7 @@ prepare_heatmap_data2(
 
 \item{zlim}{(\code{numeric}). Value to set the ranges for plotting \code{x} and \code{y} values. Supports both symmetrical (with default \code{NULL}) and asymmetrical (\code{NA}) automatic \code{zlim.} Used for zooming.}
 
-\item{col}{(\code{character}) Name (acronym) of the colour palette to use. Can be one of "RdBkGn" (c("green", "black", "red")), "BuYl" (c("blue", "yellow")), "BuWtRd" (c("blue", "white", "red")) or a valid name used by \code{RColorBrewer::brewer.pal}. Defaults to NULL which will set "RdBkGn".}
+\item{col}{(\code{character}) Name (acronym) of the colour palette to use. Can be one of "RdBkGn" (c("green", "black", "red")), "BuYl" (c("blue", "yellow")), "BuWtRd" (c("blue", "white", "red")) or a valid name used by \code{\link[RColorBrewer]{brewer.pal}}. Defaults to NULL which will set "RdBkGn".}
 
 \item{filter}{(\code{integer} or \code{logical}.) For filtering rows/columns: TRUE (=1.0) = remove rows/columns with only NAs, 0.5 = remove if >= 50 per cent NAs, etc. Defaults to \code{c(TRUE, TRUE)}.}
 

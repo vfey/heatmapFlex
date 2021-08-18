@@ -1,0 +1,98 @@
+---
+title: "Flexible Heatmaps"
+sub-title: "Tools for producing flexible heatmaps, inclduding zooming, splitting, picket plots, etc."
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{heatmapFlex-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(heatmapFlex)
+```
+
+
+## License
+[GPL-3](https://cran.r-project.org/web/licenses/GPL-3)
+
+## Description
+The package has a number of tools supporting more flexible heatmaps. The graphics is grid-like using the old graphics system. The main function is \code{heatmap.n2}, which is a wrapper around the various functions constructing individual parts of the heatmap, like sidebars, picket plots, legends etc. The function supports zooming and splitting, i.e., having (unlimited) small heatmaps underneath each other in one plot deriving from the same data set, e.g., clustered and ordered by a supervised clustering method.
+
+## Installation
+### CRAN
+```{r, eval=FALSE}
+install.packages("heatmapFlex")
+```
+
+### Latest development version
+```{r, eval=FALSE}
+install.packages("devtools")  
+devtools::install_github("vfey/heatmapFlex")
+```
+
+## Usage
+### A simple example
+Generate a random 10x10 matrix and plot it using default values (which admittedly is not pretty):
+```{r, out.width='85%', fig.width=6, fig.height=4, fig.align='center'}
+mat <- matrix(rnorm(100), nrow = 10)
+heatmap.n2(mat)
+```
+
+### A split heatmap
+Generate a random 10x10 matrix with two distinct sets, order it using default clustering methods, split it into each two groups along both rows and columns and adjust colour palette and dendrogram dimensions:
+```{r, out.width='85%', fig.width=6, fig.height=4, fig.align='center'}
+mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
+heatmap.n2(mat, col = "BuWtRd", rowMembers=rep(1:2, each=5),
+           colMembers=rep(1:2, each=5),
+           labRow=paste0("gene-", 1:10),
+           labCol=paste0(c("A", "B"), rep(1:5, 2)), r.cex=0.8,
+           dendroheight = lcm(2.2), dendrowidth = lcm(2.4))
+```
+
+### A zoomed heatmap
+The heatmap is drawn as in the previous example but without splitting. After it has been plotted to a screen graphics device and calling \code{zoom_heatmap} it can be zoomed into by clicking two distinct points inside the plot.
+```{r, eval=FALSE}
+mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
+dl <- heatmap.n2(mat, col = "BuWtRd", labRow=paste0("gene-", 1:10),
+                 labCol=paste0(c("A", "B"), rep(1:5, 2)),
+                 r.cex=0.8, dendroheight = lcm(2.2), dendrowidth = lcm(2.4))
+zoom_heatmap(dl)
+```
+
+![zoomed_example_heatmap](https://user-images.githubusercontent.com/69206181/129567742-66d35168-cf07-4c52-9e05-8d6b56682637.png){width=85%}
+
+### A split heatmap with sidebars and picketplot
+Sidebars are defined in a list of data frames where each list slot is one of the four sides of the heatmap, "bottom", "left", "top", "right", and each column in the data frame represents some statistics or other numerical variable describing the rows or columns of the data matrix.
+The picketplot takes in a data frame with columns consisting of 0 and 1. The columns describe categories that the samples (rows in the picketdata) belong to, such as sex or a health stage. The categories must be binary, like in this example, and have two rows, 'female' and 'male', and the rows (=samples) are coded with 1 (=TRUE) and 0 (=FALSE).
+```{r, out.width='85%', fig.width=6, fig.height=6, fig.align='center'}
+mat <- matrix(c(rnorm(50, mean = 1), rnorm(50, mean = -1)), nrow = 10)
+pd <- data.frame(female=c(0,0,1,0,1,1,0,1,0,1), male=c(1,1,0,1,0,0,0,0,1,0),
+                 row.names = paste0(c("A", "B"), rep(1:5, 2)),
+                 undeclared=c(0,0,0,0,0,0,1,0,0,0))
+pd
+dl <- heatmap.n2(
+  mat,
+  col = "BuWtRd",
+  rowMembers=rep(1:2, each=5),
+  colMembers=rep(1:2, each=5),
+  labRow=paste0("gene-", 1:10),
+  labCol=paste0(c("A", "B"), rep(1:5, 2)),
+  r.cex=0.8,
+  dendroheight = lcm(2.2),
+  dendrowidth = lcm(2.4),
+  sidebars = list(left=data.frame(min=apply(mat, 1, min), max=apply(mat, 1, max)),
+                  bottom=data.frame(
+                    mean=apply(mat, 2, mean, na.rm=TRUE),
+                    treat=factor(rep(c("A", "B"), 5)))),
+  factorpalettefn = colorRampPalette(c("lightblue", "limegreen")),
+  picketdata = pd)
+```
+

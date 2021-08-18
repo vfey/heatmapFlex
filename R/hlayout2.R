@@ -131,15 +131,17 @@ dendropart <- function(dendro, height=0.2, width=0.2, horiz=FALSE) {
 }
 
 
-# dummy/empty plot part - mostly as a tool in layout design
+#' dummy/empty plot part - mostly as a tool in layout design
 # note that specifying both height and width is OK - only the appropriate one based on the layout position of the part is used
 #' @noRd
 emptypart <- function(main="", height=0.001, width=0.001, verbose=(main != ""), ...) {
   emptyfct <- function(main="", cex=2, ...) {
-    omai <- par("mai")
-    if (main=="") par(mai=c(0,0,0,0))
+    if (main=="") {
+      opar <- par(no.readonly=TRUE)
+      on.exit(par(opar["mai"]))
+      par(mai=c(0,0,0,0))
+    }
     plot(0, xlim=0:1, ylim=0:1, type="n", xaxt="none", yaxt="none", ...)
-    par(mai=omai)
   }
   plotfun <- function() {
     emptyfct(bty=ifelse(verbose, "o", "n"), ...)
@@ -239,6 +241,8 @@ hlayout <- function(
   # actually do the plots
   if (execute) {
     # !HS! setting par here???
+    opar <- par(no.readonly=TRUE)
+    on.exit(par(opar["mai"]))
     par(mai=c(0.025,0.025,0.025,0.025))
     # this is needed for cm heights and widths
     heights <- c(heights, recursive=TRUE)
