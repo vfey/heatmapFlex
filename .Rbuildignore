@@ -4,3 +4,5 @@
 ^README\.md$
 ^\.project$
 ^\.settings$
+^\.DS_Store
+^LICENSE
