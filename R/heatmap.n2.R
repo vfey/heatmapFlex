@@ -509,8 +509,8 @@ hm_normalize <- function(x, scale, trim = NULL, na.rm = TRUE) {
 #' @param zlim (\code{numeric}). Value to set the ranges for plotting \code{x} and \code{y} values. Supports both symmetrical (with default \code{NULL}) and asymmetrical (\code{NA}) automatic \code{zlim.} Used for zooming.
 #' @param col (\code{character}) Name (acronym) of the colour palette to use. Can be one of "RdBkGn" (c("green", "black", "red")), "BuYl" (c("blue", "yellow")), "BuWtRd" (c("blue", "white", "red")) or a valid name used by \code{\link[RColorBrewer]{brewer.pal}}. Defaults to NULL which will set "RdBkGn".
 #' @param filter (\code{integer} or \code{logical}.) For filtering rows/columns: TRUE (=1.0) = remove rows/columns with only NAs, 0.5 = remove if >= 50 per cent NAs, etc. Defaults to \code{c(TRUE, TRUE)}.
-#' @param add.sig (\code{logical}). Should significance asterixes be drawn?
-#' @param pv (\code{numeric}). Matrix of the same dimensions as \code{x} with P-Values for correlation significance.
+#' @param add.sig (\code{logical}). Should significance asterisks be drawn?
+#' @param pv (\code{numeric}). Matrix of the same dimensions as \code{x} with P-Values for plotting significance asterisks.
 #' @details This function is used by \code{heatmap.n2} and should not be called bu the user directly. It is only documented because its arguments are passed by the main function when given there.
 
 prepare_heatmap_data2 <- function(
@@ -653,8 +653,11 @@ create_sidebar <- function(x, prep, vertical=TRUE, width=lcm(1), label="", na.co
   part
 }
 
-#' Main heatmap function
-#' @description This is the main function to be called be end users. It accepts a numeric matrix and draws a heatmap.
+#' Flexible Heatmaps
+#' @description Produce a "display list" with all parts of the heatmap. The default options will also draw the plot
+#'     but this can be disabled and the display list be used as input to \code{draw_heatmap} which accepts
+#'     further modifications to individual part parameters.
+#'     \command{heatmap.n2} accepts a numeric matrix.
 #' @param x (\code{numeric}). Numeric matrix.
 #' @param main (\code{character}). Main plot title.
 #' @param ... Additional arguments passed to \code{prepare_heatmap_data2}.
@@ -681,16 +684,30 @@ create_sidebar <- function(x, prep, vertical=TRUE, width=lcm(1), label="", na.co
 #' @param legendcorner (\code{character}). Position of the legend.
 #' @param plot (\code{logical}). Draw the plot? Defaults to \code{TRUE}.
 #' @param factorpalettefn (\code{character}). Name of the colour palette.
-#' @param add.sig (\code{logical}). Should significance asterixes be drawn?
-#' @param pv (\code{numeric}). Matrix of the same dimensions as \code{x} with P-Values for correlation significance.
-#' @param order_list (\code{logical}). Should the order of the correlation matrix be reversed? Meaningful if the order
-#'     of input variables should be preserved because \code{\link[graphics]{image}} turns the input matrix.
+#' @param add.sig (\code{logical}). Should significance asterisks be drawn? See 'Details'.
+#' @param pv (\code{numeric}). Matrix of the same dimensions as \code{x} with P-Values for plotting significance asterisks.
+#' @param order_list (\code{logical}). If \code{x} is a correlation matrix, has the order of the matrix, i.e. the
+#'     'list' of labels been reversed? See \code{\link[coreheat]{cormap2}}.
 #' @param genes2highl (\code{character}). Vector of gene symbols (or whatever labels are used) to be highlighted.
 #'     If not \code{NULL} will draw a semi-transparent rectangle around the labels and rows or columns in the heatmap
 #'     labels.
 #'
-#' @details The result can be used for zooming. For simple basic cases, picketvar can be given directly. Factor
-#'     sidebars are supported, but legends are only shown for the first two.
+#' @details
+#'     The result can be used for zooming.
+#'
+#'     For simple basic cases, picketvar can be given directly. Factor sidebars are supported, but legends are only
+#'     shown for the first two.
+#'
+#'     To emphasize significance of the values plotted in the heatmap the user can provide a matrix of P-Values
+#'     that will be depicted as significance asterisks. The P-Value matrix needs to have the same dimensions as
+#'     the input matrix. The asterisks encode significance as follows:
+#'     \tabular{ll}{
+#'     \tab P < 0.05:  *\cr
+#'     \tab P < 0.01:  **\cr
+#'     \tab P < 0.001: ***\cr
+#'     }
+#'     An example is given in the vignette for correlation significance.
+#'
 #'     Arguments that will be passed on the \code{prepare_heatmap_data2}:
 #' \tabular{ll}{
 #' \tab labRow (\code{character}). Custom row labels\cr
@@ -706,8 +723,8 @@ create_sidebar <- function(x, prep, vertical=TRUE, width=lcm(1), label="", na.co
 #' \tab scale (\code{character}). One of "row", "column" or "none": By which dimension should data be scaled? Defaults to "none"\cr
 #' \tab trim (\code{numeric}). Value to "cut off" data distribution. Values and both ends of the distribution, larger or smaller, respectively, will be made equal to \code{+/-trim}. Defaults to \code{NULL}, no trimming\cr
 #' \tab zlim (\code{numeric}). Value to set the ranges for plotting \code{x} and \code{y} values. Supports both symmetrical (with default \code{NULL}) and asymmetrical (\code{NA}) automatic \code{zlim.} Used for zooming\cr
-#' \tab col (\code{character}) Name (acronym) of the colour palette to use. Can be one of "RdBkGn" (c("green", "black", "red")), "BuYl" (c("blue", "yellow")), "BuWtRd" (c("blue", "white", "red")) or a valid name used by \code{\link[RColorBrewer]{brewer.pal}}. Defaults to NULL which will set "RdBkGn"\cr
-#' \tab filter (\code{integer} or \code{logical}.) For filtering rows/columns: TRUE (=1.0) = remove rows/columns with only NAs, 0.5 = remove if >= 50 per cent NAs, etc. Defaults to \code{c(TRUE, TRUE)}\cr
+#' \tab col (\code{character}). Name (acronym) of the colour palette to use. Can be one of "RdBkGn" (c("green", "black", "red")), "BuYl" (c("blue", "yellow")), "BuWtRd" (c("blue", "white", "red")) or a valid name used by \code{\link[RColorBrewer]{brewer.pal}}. Defaults to NULL which will set "RdBkGn"\cr
+#' \tab filter (\code{integer} or \code{logical}). For filtering rows/columns: TRUE (=1.0) = remove rows/columns with only NAs, 0.5 = remove if >= 50 per cent NAs, etc. Defaults to \code{c(TRUE, TRUE)}\cr
 #' }
 #' @return In addition to its side-effect of plotting the heatmap (if \code{plot} is \code{TRUE}, which is the default),
 #'     the function will invisibly returns the prepared "display list", a \code{list} of all parts of the heatmap used by

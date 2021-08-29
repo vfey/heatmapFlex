@@ -2,6 +2,8 @@
 title: "Flexible Heatmaps"
 sub-title: "Tools for producing flexible heatmaps, inclduding zooming, splitting, picket plots, etc."
 output: rmarkdown::html_vignette
+bibliography: refs.bib
+csl: Harvard.csl
 vignette: >
   %\VignetteIndexEntry{heatmapFlex-vignette}
   %\VignetteEngine{knitr::rmarkdown}
